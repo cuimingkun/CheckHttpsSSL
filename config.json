@@ -1,8 +1,8 @@
 {
     "url":[
-        "baidu.com",
-        "qq.com",
-        "163.com"
+        "https://www.baidu.com",
+        "https://www.qq.com",
+        "https://www.163.com"
     ],
     "version":"1.2"
 }

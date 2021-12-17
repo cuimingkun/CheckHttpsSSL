@@ -2,6 +2,7 @@ package main
 
 import (
 	cnf "CheckHttpsSSL/config"
+	svc "CheckHttpsSSL/service"
 	"flag"
 	"fmt"
 	"os"
@@ -17,7 +18,7 @@ func main() {
 
 	// 如果configfile变量为空即未指定配置文件，则调用DefConfig函数修改configfile的值为默认配置文件路径
 	if configfile == "" {
-		cnf.DefConfig(&configfile)
+		configfile = cnf.DefConfig(configfile)
 	}
 	// 判断默认配置文件是否存在，不存在则退出
 	_, err := os.Stat(configfile)
@@ -29,6 +30,6 @@ func main() {
 
 	//读取配置文件信息
 	cnf.SetConfig(configfile)
-	urllist := cnf.Confs["url"]
-	fmt.Println(string(urllist))
+	//调用检测
+	svc.CheckSSL(cnf.Conf.Url)
 }

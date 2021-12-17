@@ -5,35 +5,38 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strings"
+	"path/filepath"
 )
 
-type Configs map[string]json.RawMessage
+type MainConfig struct {
+	Version string   `json:"version"`
+	Url     []string `json:"url"`
+}
 
-var Confs Configs
+var Conf *MainConfig
 
 //修改默认配置文件位置的函数
-func DefConfig(configfile *string) {
+func DefConfig(configfile string) string {
 	pwd, _ := os.Getwd()
-	*configfile = strings.Join([]string{pwd, "/config.json"}, "")
+	return filepath.Join(pwd, "config.json")
 }
 
 //从配置文件中载入json字符串
-func LoadConfig(path string) Configs {
+func LoadConfig(path string) *MainConfig {
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Panicln("load config conf failed: ", err)
 	}
-	allConfigs := make(Configs, 0)
-	err = json.Unmarshal(buf, &allConfigs)
+	mainConfig := &MainConfig{}
+	err = json.Unmarshal(buf, mainConfig)
 	if err != nil {
 		log.Panicln("decode config file failed:", string(buf), err)
 	}
-	return allConfigs
+	return mainConfig
 }
 
 //初始化 可以运行多次
 func SetConfig(path string) {
-	allConfigs := LoadConfig(path)
-	Confs = allConfigs
+	mainConfig := LoadConfig(path)
+	Conf = mainConfig
 }
