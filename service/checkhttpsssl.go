@@ -38,6 +38,7 @@ func checksslOne(url string) {
 	} else {
 		defer resp.Body.Close()
 		certInfo := resp.TLS.PeerCertificates[0]
+		fmt.Println("==========================================")
 		fmt.Println("url:", url)
 		fmt.Println("过期时间:", certInfo.NotAfter)
 		//fmt.Println("组织信息:", certInfo.Subject)
